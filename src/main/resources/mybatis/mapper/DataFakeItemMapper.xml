@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mzq.population_flow_monitoring_xc.mapper.DataFakeItemMapper">
+
+    <!--temp_file的映射结果集-->
+    <resultMap type="com.mzq.population_flow_monitoring_xc.entity.DataFakeItem" id="DataFakeItem">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="phone" column="phone" jdbcType="CHAR"/>
+        <result property="ssn" column="ssn" jdbcType="CHAR"/>
+        <result property="time" column="time" jdbcType="TIMESTAMP"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="longitude" column="longitude" jdbcType="VARCHAR"/>
+        <result property="latitude" column="latitude" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+
+    <!--查询单个temp_file and id &lt; 10000-->
+    <select id="getDataFakeItemById" resultMap="DataFakeItem">
+        SELECT * FROM data_fake WHERE id=#{id}
+    </select>
+
+    <select id="getAllSSN" resultType="String">
+        SELECT ssn FROM data_fake GROUP BY ssn
+    </select>
+
+    <select id="getSSNLLByTime" resultType="com.mzq.population_flow_monitoring_xc.entity.SSNLL">
+        SELECT ssn,longitude,latitude  FROM data_fake WHERE DATE(time) = #{time}and id &lt; 10000
+    </select>
+
+    <select id="getLLTBySsn" resultType="com.mzq.population_flow_monitoring_xc.entity.LLT">
+        SELECT longitude,latitude,DATE(time)  FROM data_fake WHERE ssn = #{ssn}
+    </select>
+
+    <select id="getLLTHByName" resultType="com.mzq.population_flow_monitoring_xc.entity.LLTH">
+        SELECT longitude,latitude,time FROM data_fake WHERE name=#{name}
+    </select>
+
+</mapper>
